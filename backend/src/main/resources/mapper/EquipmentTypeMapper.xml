@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="backend.backend.mapper.EquipmentTypeMapper">
+
+    <!-- 结果映射（驼峰自动映射也适用） -->
+    <resultMap id="EquipmentTypeMap" type="backend.backend.entity.EquipmentType">
+        <id column="id" property="id"/>
+        <result column="type_name" property="typeName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="default_cycle" property="defaultCycle"/>
+        <result column="status" property="status"/>
+        <result column="desc" property="desc"/>
+    </resultMap>
+
+    <!-- 查询全部 -->
+    <select id="findAll" resultMap="EquipmentTypeMap">
+        SELECT * FROM equipment_type ORDER BY id ASC;
+    </select>
+
+    <!-- 根据 ID 查询 -->
+    <select id="findById" parameterType="int" resultMap="EquipmentTypeMap">
+        SELECT * FROM equipment_type WHERE id = #{id};
+    </select>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="backend.backend.entity.EquipmentType" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO equipment_type
+        (type_name, parent_id, default_cycle, status, `desc`)
+        VALUES
+        (#{typeName}, #{parentId}, #{defaultCycle}, #{status}, #{desc});
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="backend.backend.entity.EquipmentType">
+        UPDATE equipment_type
+        SET
+            type_name = #{typeName},
+            parent_id = #{parentId},
+            default_cycle = #{defaultCycle},
+            status = #{status},
+            `desc` = #{desc}
+        WHERE id = #{id};
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM equipment_type WHERE id = #{id};
+    </delete>
+
+    <!-- 检查名称是否重复 -->
+    <select id="countByName" resultType="int">
+        SELECT COUNT(*)
+        FROM equipment_type
+        WHERE type_name = #{typeName}
+    </select>
+
+
+</mapper>
